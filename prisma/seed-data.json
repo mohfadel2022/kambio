@@ -211,7 +211,97 @@
       "updatedAt": "2026-05-16T13:48:18.297Z"
     }
   ],
-  "orders": [],
-  "exchanges": [],
-  "transactions": []
+  "orders": [
+    {
+      "id": "cmp8esh3c0001vzjczc33s3dg",
+      "number": "KB-000001",
+      "senderName": "cliente1 cl1app",
+      "recipientName": "cliente1 cl1app",
+      "amountFrom": "100",
+      "currencyFromId": "cmp8di1yi0005vzykdw0ewobr",
+      "amountTo": "25000",
+      "currencyToId": "cmp8di1z40006vzykmmxj3zg5",
+      "rate": "250",
+      "status": "PAID",
+      "notes": "",
+      "senderId": null,
+      "managerId": null,
+      "walletId": null,
+      "paidAt": null,
+      "createdAt": "2026-05-16T13:55:41.063Z",
+      "updatedAt": "2026-05-16T23:21:19.729Z"
+    }
+  ],
+  "exchanges": [
+    {
+      "id": "cmp8plhm70005vz8c99zwd9yv",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "currencyFromId": "cmp8di1yi0005vzykdw0ewobr",
+      "amountFrom": "500",
+      "currencyToId": "cmp8di1z40006vzykmmxj3zg5",
+      "amountTo": "135000",
+      "rate": "270",
+      "userId": null,
+      "date": "2026-05-16T21:08:08.595Z",
+      "createdAt": "2026-05-16T18:58:10.926Z"
+    },
+    {
+      "id": "cmpa2mh3f0003vz6gvg4w9zt9",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "currencyFromId": "cmp8di1z40006vzykmmxj3zg5",
+      "amountFrom": "50000",
+      "currencyToId": "cmp8di1yi0005vzykdw0ewobr",
+      "amountTo": "200",
+      "rate": "0.004",
+      "userId": "cmp8di26g000fvzyk5z7c91rf",
+      "date": "2026-05-17T00:00:00.000Z",
+      "createdAt": "2026-05-17T17:50:38.091Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "cmp8plhog0007vz8cfimqd4nl",
+      "amount": "500",
+      "currencyId": "cmp8di1yi0005vzykdw0ewobr",
+      "type": "EXCHANGE",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "orderId": null,
+      "userId": "cmo741fae000evzmo4u57m4qh",
+      "createdAt": "2026-05-16T18:58:11.008Z",
+      "exchangeId": "cmp8plhm70005vz8c99zwd9yv"
+    },
+    {
+      "id": "cmp8plhsi0009vz8cetr0us12",
+      "amount": "135000",
+      "currencyId": "cmp8di1z40006vzykmmxj3zg5",
+      "type": "EXCHANGE",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "orderId": null,
+      "userId": "cmo741fae000evzmo4u57m4qh",
+      "createdAt": "2026-05-16T18:58:11.154Z",
+      "exchangeId": "cmp8plhm70005vz8c99zwd9yv"
+    },
+    {
+      "id": "cmpa2nhdw000bvz6ggp88v7w3",
+      "amount": "50000",
+      "currencyId": "cmp8di1z40006vzykmmxj3zg5",
+      "type": "EXCHANGE",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "orderId": null,
+      "userId": "cmp8di26g000fvzyk5z7c91rf",
+      "createdAt": "2026-05-17T00:00:00.000Z",
+      "exchangeId": "cmpa2mh3f0003vz6gvg4w9zt9"
+    },
+    {
+      "id": "cmpa2nhez000dvz6g15rxn4y0",
+      "amount": "200",
+      "currencyId": "cmp8di1yi0005vzykdw0ewobr",
+      "type": "EXCHANGE",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "orderId": null,
+      "userId": "cmp8di26g000fvzyk5z7c91rf",
+      "createdAt": "2026-05-17T00:00:00.000Z",
+      "exchangeId": "cmpa2mh3f0003vz6gvg4w9zt9"
+    }
+  ]
 }

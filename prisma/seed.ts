@@ -112,6 +112,30 @@ async function main() {
     }
   }
 
+  // 9. Seed Orders
+  if (data.orders && data.orders.length > 0) {
+    console.log(`- Seeding ${data.orders.length} orders...`);
+    for (const order of data.orders) {
+      await prisma.order.create({ data: order });
+    }
+  }
+
+  // 10. Seed Exchanges
+  if (data.exchanges && data.exchanges.length > 0) {
+    console.log(`- Seeding ${data.exchanges.length} exchanges...`);
+    for (const exchange of data.exchanges) {
+      await prisma.exchange.create({ data: exchange });
+    }
+  }
+
+  // 11. Seed Transactions
+  if (data.transactions && data.transactions.length > 0) {
+    console.log(`- Seeding ${data.transactions.length} transactions...`);
+    for (const transaction of data.transactions) {
+      await prisma.transaction.create({ data: transaction });
+    }
+  }
+
   console.log("Seeding process completed successfully!");
 }
 
