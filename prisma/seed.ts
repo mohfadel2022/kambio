@@ -16,19 +16,28 @@ async function main() {
   const data = JSON.parse(rawData);
 
   console.log("Cleaning up target database...");
+  const safeDelete = async (name: string, deleteFn: () => Promise<any>) => {
+    try {
+      await deleteFn();
+    } catch (e: any) {
+      // Ignore errors if the table does not exist yet
+      console.log(`- Note: Table for "${name}" was not cleaned up (might not exist yet): ${e.message || e}`);
+    }
+  };
+
   // Order of deletion to avoid foreign key violations
-  await prisma.transaction.deleteMany({});
-  await prisma.exchange.deleteMany({});
-  await prisma.order.deleteMany({});
-  await prisma.balance.deleteMany({});
-  await prisma.wallet.deleteMany({});
-  await prisma.currency.deleteMany({});
-  await prisma.user.deleteMany({});
-  await prisma.permission.deleteMany({});
-  await prisma.role.deleteMany({});
-  await prisma.branch.deleteMany({});
-  await prisma.company.deleteMany({});
-  await prisma.client.deleteMany({});
+  await safeDelete("transaction", () => prisma.transaction.deleteMany({}));
+  await safeDelete("exchange", () => prisma.exchange.deleteMany({}));
+  await safeDelete("order", () => prisma.order.deleteMany({}));
+  await safeDelete("balance", () => prisma.balance.deleteMany({}));
+  await safeDelete("wallet", () => prisma.wallet.deleteMany({}));
+  await safeDelete("currency", () => prisma.currency.deleteMany({}));
+  await safeDelete("user", () => prisma.user.deleteMany({}));
+  await safeDelete("permission", () => prisma.permission.deleteMany({}));
+  await safeDelete("role", () => prisma.role.deleteMany({}));
+  await safeDelete("branch", () => prisma.branch.deleteMany({}));
+  await safeDelete("company", () => prisma.company.deleteMany({}));
+  await safeDelete("client", () => prisma.client.deleteMany({}));
 
   console.log("Seeding data...");
 
