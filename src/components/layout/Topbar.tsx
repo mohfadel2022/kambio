@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+
 import { LogOut, Bell, User as UserIcon, Menu } from "lucide-react";
 import type { User } from "next-auth";
 import { useTranslations, useLocale } from "next-intl";
