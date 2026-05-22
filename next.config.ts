@@ -13,7 +13,7 @@ const localIPs = Object.values(os.networkInterfaces())
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   allowedDevOrigins: [...localIPs, "localhost", "127.0.0.1"],
-  serverExternalPackages: ["nodemailer", "@react-pdf/renderer", "qrcode"],
+  serverExternalPackages: ["nodemailer", "@react-pdf/renderer", "qrcode", "puppeteer"],
 };
  
 export default withNextIntl(nextConfig);
