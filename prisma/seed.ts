@@ -1,110 +1,118 @@
 import { PrismaClient } from "@prisma/client";
+import * as fs from "fs";
+import * as path from "path";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Cleaning up database...");
-  // Order of deletion matters due to foreign keys
+  console.log("Loading seed data from seed-data.json...");
+  const dataPath = path.join(__dirname, "seed-data.json");
+  
+  if (!fs.existsSync(dataPath)) {
+    throw new Error(`Seed data file not found at ${dataPath}. Run 'npx tsx prisma/dump.ts' first.`);
+  }
+
+  const rawData = fs.readFileSync(dataPath, "utf-8");
+  const data = JSON.parse(rawData);
+
+  console.log("Cleaning up target database...");
+  // Order of deletion to avoid foreign key violations
   await prisma.transaction.deleteMany({});
+  await prisma.exchange.deleteMany({});
   await prisma.order.deleteMany({});
   await prisma.balance.deleteMany({});
   await prisma.wallet.deleteMany({});
   await prisma.currency.deleteMany({});
-  // We keep users for now unless asked to wipe them too
-  
-  console.log("Creating new currencies...");
-  // 1. Create Currencies
-  const eur = await prisma.currency.create({
-    data: {
-      code: "EUR",
-      symbol: "€",
-      name: "Euro",
-      isPrimary: true,
-    },
-  });
+  await prisma.user.deleteMany({});
+  await prisma.permission.deleteMany({});
+  await prisma.role.deleteMany({});
+  await prisma.branch.deleteMany({});
+  await prisma.company.deleteMany({});
+  await prisma.client.deleteMany({});
 
-  const dzd = await prisma.currency.create({
-    data: {
-      code: "DZD",
-      symbol: "د.ج",
-      name: "Algerian Dinar",
-      rateUnder500: 240.0,
-      rate500To1000: 242.0,
-      rateOver1000: 244.0,
-    },
-  });
+  console.log("Seeding data...");
 
-  const mru = await prisma.currency.create({
-    data: {
-      code: "MRU",
-      symbol: "UM",
-      name: "Mauritanian Ouguiya",
-      rateUnder500: 42.0,
-      rate500To1000: 42.5,
-      rateOver1000: 43.0,
-    },
-  });
+  // 1. Seed Companies
+  if (data.companies && data.companies.length > 0) {
+    console.log(`- Seeding ${data.companies.length} companies...`);
+    for (const company of data.companies) {
+      await prisma.company.create({ data: company });
+    }
+  }
 
-  console.log("Currencies created");
+  // 2. Seed Branches
+  if (data.branches && data.branches.length > 0) {
+    console.log(`- Seeding ${data.branches.length} branches...`);
+    for (const branch of data.branches) {
+      await prisma.branch.create({ data: branch });
+    }
+  }
 
-  // 2. Create Main Caja
-  const mainCaja = await prisma.wallet.create({
-    data: {
-      name: "Principal (Main Cash)",
-      branch: {
-        create: {
-          name: "Main Office"
+  // 3. Seed Roles & Permissions
+  if (data.roles && data.roles.length > 0) {
+    console.log(`- Seeding ${data.roles.length} roles and their permissions...`);
+    for (const role of data.roles) {
+      const { permissions, ...roleData } = role;
+      await prisma.role.create({ data: roleData });
+      
+      if (permissions && permissions.length > 0) {
+        for (const permission of permissions) {
+          await prisma.permission.create({ data: permission });
         }
-      },
-    },
-  });
+      }
+    }
+  }
 
-  console.log("Main Caja created");
+  // 4. Seed Users
+  if (data.users && data.users.length > 0) {
+    console.log(`- Seeding ${data.users.length} users...`);
+    for (const user of data.users) {
+      await prisma.user.create({ data: user });
+    }
+  }
 
-  // 3. Initialize Balances for Main Caja
-  await prisma.balance.createMany({
-    data: [
-      { walletId: mainCaja.id, currencyId: eur.id, amount: 0 },
-      { walletId: mainCaja.id, currencyId: dzd.id, amount: 0 },
-      { walletId: mainCaja.id, currencyId: mru.id, amount: 0 },
-    ],
-  });
+  // 5. Seed Currencies
+  if (data.currencies && data.currencies.length > 0) {
+    console.log(`- Seeding ${data.currencies.length} currencies...`);
+    for (const currency of data.currencies) {
+      await prisma.currency.create({ data: currency });
+    }
+  }
 
-  console.log("Initial balances created for Main Caja");
+  // 6. Seed Wallets
+  if (data.wallets && data.wallets.length > 0) {
+    console.log(`- Seeding ${data.wallets.length} wallets...`);
+    for (const wallet of data.wallets) {
+      await prisma.wallet.create({ data: wallet });
+    }
+  }
 
-  // 4. Create Admin Role
-  const adminRole = await prisma.role.upsert({
-    where: { name: "admin" },
-    update: {},
-    create: {
-      name: "admin",
-      description: "System Administrator",
-    },
-  });
+  // 7. Seed Balances
+  if (data.balances && data.balances.length > 0) {
+    console.log(`- Seeding ${data.balances.length} balances...`);
+    for (const balance of data.balances) {
+      await prisma.balance.create({ data: balance });
+    }
+  }
 
-  // 5. Create Admin User
-  await prisma.user.upsert({
-    where: { email: "admin@kambio.com" },
-    update: {
-      roleId: adminRole.id,
-    },
-    create: {
-      email: "admin@kambio.com",
-      name: "Kambio Admin",
-      roleId: adminRole.id,
-    },
-  });
+  // 8. Seed Clients
+  if (data.clients && data.clients.length > 0) {
+    console.log(`- Seeding ${data.clients.length} clients...`);
+    for (const client of data.clients) {
+      await prisma.client.create({ data: client });
+    }
+  }
 
-  console.log("Admin user created: admin@kambio.com / kambio123");
+  console.log("Seeding process completed successfully!");
 }
 
 main()
   .then(async () => {
     await prisma.$disconnect();
-    console.log("Seeding complete successfully.");
+    console.log("Database seeded successfully.");
   })
   .catch(async (e) => {
-    console.error("Error during seeding:", e);
+    console.error("Error during database seeding:", e);
     await prisma.$disconnect();
     process.exit(1);
   });

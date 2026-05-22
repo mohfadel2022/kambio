@@ -1,0 +1,217 @@
+{
+  "companies": [],
+  "branches": [
+    {
+      "id": "cmp8di2090009vzyk1v32p6ib",
+      "name": "Main Office",
+      "address": null,
+      "phone": null,
+      "manager": null,
+      "createdAt": "2026-05-16T13:19:35.337Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": "cmp8di24w000dvzyk70b81ga5",
+      "name": "admin",
+      "description": "System Administrator",
+      "createdAt": "2026-05-16T13:19:35.504Z",
+      "updatedAt": "2026-05-16T13:19:35.504Z",
+      "permissions": [
+        {
+          "id": "cmp8eg8ml000kvzyki9aox0d0",
+          "module": "orders",
+          "action": "all",
+          "roleId": "cmp8di24w000dvzyk70b81ga5"
+        },
+        {
+          "id": "cmp8eg8o3000mvzykqy8fpmrf",
+          "module": "clients",
+          "action": "all",
+          "roleId": "cmp8di24w000dvzyk70b81ga5"
+        },
+        {
+          "id": "cmp8eg8p9000ovzykfo80wcnk",
+          "module": "wallets",
+          "action": "all",
+          "roleId": "cmp8di24w000dvzyk70b81ga5"
+        },
+        {
+          "id": "cmp8eg8qd000qvzykz4twhfdi",
+          "module": "users",
+          "action": "all",
+          "roleId": "cmp8di24w000dvzyk70b81ga5"
+        },
+        {
+          "id": "cmp8eg8rf000svzykcgozg1ms",
+          "module": "currencies",
+          "action": "all",
+          "roleId": "cmp8di24w000dvzyk70b81ga5"
+        },
+        {
+          "id": "cmp8eg8sk000uvzyk3zpp1a9v",
+          "module": "roles",
+          "action": "all",
+          "roleId": "cmp8di24w000dvzyk70b81ga5"
+        }
+      ]
+    },
+    {
+      "id": "cmp8eg8kf000hvzykefz1wgfn",
+      "name": "agent",
+      "description": "Can manage orders and clients",
+      "createdAt": "2026-05-16T13:46:10.143Z",
+      "updatedAt": "2026-05-16T13:46:10.143Z",
+      "permissions": [
+        {
+          "id": "cmp8eg8tl000wvzykpwc33vh7",
+          "module": "orders",
+          "action": "all",
+          "roleId": "cmp8eg8kf000hvzykefz1wgfn"
+        },
+        {
+          "id": "cmp8eg8ui000yvzykt2f5589t",
+          "module": "clients",
+          "action": "all",
+          "roleId": "cmp8eg8kf000hvzykefz1wgfn"
+        },
+        {
+          "id": "cmp8eg8vi0010vzykwwcfqbsy",
+          "module": "wallets",
+          "action": "view",
+          "roleId": "cmp8eg8kf000hvzykefz1wgfn"
+        },
+        {
+          "id": "cmp8eg8wi0012vzykdazguh9n",
+          "module": "currencies",
+          "action": "view",
+          "roleId": "cmp8eg8kf000hvzykefz1wgfn"
+        }
+      ]
+    },
+    {
+      "id": "cmp8eg8lj000ivzykjkakobpw",
+      "name": "cash",
+      "description": "Basic cashier operations",
+      "createdAt": "2026-05-16T13:46:10.183Z",
+      "updatedAt": "2026-05-16T13:46:10.183Z",
+      "permissions": [
+        {
+          "id": "cmp8eg8xi0014vzyk901pxumf",
+          "module": "orders",
+          "action": "view",
+          "roleId": "cmp8eg8lj000ivzykjkakobpw"
+        },
+        {
+          "id": "cmp8eg8yd0016vzykt7zcjvl3",
+          "module": "orders",
+          "action": "create",
+          "roleId": "cmp8eg8lj000ivzykjkakobpw"
+        },
+        {
+          "id": "cmp8eg8ze0018vzykkc3fwrsu",
+          "module": "clients",
+          "action": "view",
+          "roleId": "cmp8eg8lj000ivzykjkakobpw"
+        },
+        {
+          "id": "cmp8eg907001avzykztz1rymg",
+          "module": "wallets",
+          "action": "view",
+          "roleId": "cmp8eg8lj000ivzykjkakobpw"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "cmp8di26g000fvzyk5z7c91rf",
+      "name": "Kambio Admin",
+      "email": "admin@kambio.com",
+      "emailVerified": null,
+      "image": null,
+      "roleId": "cmp8di24w000dvzyk70b81ga5",
+      "phone": null
+    }
+  ],
+  "currencies": [
+    {
+      "id": "cmp8di1zn0007vzykmstv7i74",
+      "code": "MRU",
+      "symbol": "UM",
+      "name": "Mauritanian Ouguiya",
+      "isPrimary": false,
+      "rateUnder500": "42",
+      "rate500To1000": "42.5",
+      "rateOver1000": "43",
+      "buyRate": "1",
+      "sellRate": "1"
+    },
+    {
+      "id": "cmp8di1yi0005vzykdw0ewobr",
+      "code": "EUR",
+      "symbol": "€",
+      "name": "Euro",
+      "isPrimary": true,
+      "rateUnder500": "1",
+      "rate500To1000": "1",
+      "rateOver1000": "1",
+      "buyRate": "1",
+      "sellRate": "1"
+    },
+    {
+      "id": "cmp8di1z40006vzykmmxj3zg5",
+      "code": "DZD",
+      "symbol": "د.ج",
+      "name": "Algerian Dinar",
+      "isPrimary": false,
+      "rateUnder500": "250",
+      "rate500To1000": "260",
+      "rateOver1000": "270",
+      "buyRate": "250",
+      "sellRate": "260"
+    }
+  ],
+  "wallets": [
+    {
+      "id": "cmp8di2090008vzyklm0be5ru",
+      "name": "Principal (Main Cash)",
+      "branchId": "cmp8di2090009vzyk1v32p6ib"
+    }
+  ],
+  "balances": [
+    {
+      "id": "cmp8di23m000cvzykcyn3kdsr",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "currencyId": "cmp8di1zn0007vzykmstv7i74",
+      "amount": "0"
+    },
+    {
+      "id": "cmp8di23m000bvzyksw310hoo",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "currencyId": "cmp8di1z40006vzykmmxj3zg5",
+      "amount": "85000"
+    },
+    {
+      "id": "cmp8di23m000avzyki752r7nw",
+      "walletId": "cmp8di2090008vzyklm0be5ru",
+      "currencyId": "cmp8di1yi0005vzykdw0ewobr",
+      "amount": "700"
+    }
+  ],
+  "clients": [
+    {
+      "id": "cmp8eizga001bvzyklbjw4mrc",
+      "firstName": "cliente1",
+      "lastName": "cl1app",
+      "documentId": null,
+      "phone": "+213696588399",
+      "email": "mohfadel2010@gmail.com",
+      "createdAt": "2026-05-16T13:48:18.297Z",
+      "updatedAt": "2026-05-16T13:48:18.297Z"
+    }
+  ],
+  "orders": [],
+  "exchanges": [],
+  "transactions": []
+}
