@@ -153,7 +153,7 @@ export async function sendInvoiceEmail({
     attachments: [
       {
         filename: `Kambio_Factura_${order.number}.pdf`,
-        content: pdfBuffer,
+        content: Buffer.from(pdfBuffer),
         contentType: "application/pdf",
       },
     ],

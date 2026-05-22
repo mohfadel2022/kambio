@@ -25,7 +25,7 @@ export async function GET(
 
     const pdfBuffer = await generatePdfBuffer(url);
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(Buffer.from(pdfBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

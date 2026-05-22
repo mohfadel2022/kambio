@@ -35,7 +35,8 @@ export function UserTable({ data, translations, roles }: { data: User[], transla
         </Badge>
       ),
       filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id)?.name);
+        const role = row.original.role;
+        return role ? value.includes(role.name) : false;
       },
     },
     {

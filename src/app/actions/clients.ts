@@ -124,12 +124,6 @@ export async function getClientForEdit(id: string) {
 export async function getClientDetailsPageData(id: string) {
   const client = await prisma.client.findUnique({
     where: { id },
-    include: {
-      orders: {
-        orderBy: { createdAt: "desc" },
-        take: 5,
-      }
-    }
   });
   return JSON.parse(JSON.stringify(client));
 }

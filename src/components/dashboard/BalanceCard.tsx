@@ -7,7 +7,7 @@ interface BalanceCardProps {
     walletBranch: string | null;
     balance: {
       id: string | number;
-      amount: prisma.Decimal | number | string;
+      amount: Prisma.Decimal | number | string;
       currency: {
         code: string;
         name: string;
