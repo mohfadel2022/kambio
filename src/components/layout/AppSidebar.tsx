@@ -180,7 +180,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => signOut({ callbackUrl: `${window.location.origin}/${locale}/login` })}
+              onClick={async () => {
+                await signOut({ redirect: false });
+                router.push('/login' as any);
+              }}
               className="w-full h-10 justify-start px-4 gap-3 font-bold card-rounded text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
             >
               <LogOut className="w-4 h-4 opacity-60" />
