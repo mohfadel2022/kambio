@@ -9,6 +9,7 @@ import Credentials from "next-auth/providers/credentials";
  */
 export const { auth } = NextAuth({
   trustHost: true,
+  secret: process.env.AUTH_SECRET,
   providers: [
     // No-op credentials provider — actual auth happens in src/auth.ts.
     // We only need session/JWT reading here.
