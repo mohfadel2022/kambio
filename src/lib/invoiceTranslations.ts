@@ -1,0 +1,78 @@
+export type InvoiceLocale = "es" | "ar";
+
+export const invoiceTranslations = {
+  es: {
+    invoiceLabel: "Factura Oficial",
+    invoiceTitle: "FACTURA",
+    verifyQR: "Verificar autenticidad",
+    statusLabel: "Estado de la Orden",
+    statuses: {
+      PAID: "PAGADO",
+      PENDING: "PENDIENTE",
+      VERIFIED: "VERIFICADO",
+      CANCELLED: "CANCELADO",
+    },
+    sender: "Remitente",
+    recipient: "Destinatario",
+    colDescription: "Descripción",
+    colRate: "Tasa",
+    colAmount: "Monto",
+    transferType: "Transferencia de Dinero",
+    totalReceived: "Total a Recibir",
+    notes: "Notas",
+    thanks: "Gracias por usar Kambio",
+    autoDoc: "Documento generado automáticamente. No requiere firma.",
+    generatedOn: "Generado el",
+    // Email
+    emailSubject: (number: string) => `Tu factura de Kambio — Orden #${number}`,
+    emailGreeting: (name: string) => `Hola, ${name}`,
+    emailBody: "Adjunto a este correo encontrarás tu factura oficial en formato PDF. Puedes guardarla o imprimirla cuando lo necesites.",
+    emailDetail: "Detalle",
+    emailValue: "Valor",
+    emailOrderRef: "Orden N°",
+    emailAmountSent: "Monto Enviado",
+    emailRecipient: "Destinatario",
+    emailTotal: "Total a Recibir",
+    emailAttachNote: "📎 La factura en PDF está adjunta a este correo.",
+    emailFooter: "Email automático generado por Kambio. Por favor no respondas a este correo.",
+  },
+  ar: {
+    invoiceLabel: "فاتورة رسمية",
+    invoiceTitle: "فاتورة",
+    verifyQR: "التحقق من الأصالة",
+    statusLabel: "حالة الطلب",
+    statuses: {
+      PAID: "مدفوع",
+      PENDING: "معلق",
+      VERIFIED: "موثق",
+      CANCELLED: "ملغى",
+    },
+    sender: "المرسل",
+    recipient: "المستلم",
+    colDescription: "الوصف",
+    colRate: "السعر",
+    colAmount: "المبلغ",
+    transferType: "تحويل الأموال",
+    totalReceived: "إجمالي المستلم",
+    notes: "ملاحظات",
+    thanks: "شكراً لاستخدام Kambio",
+    autoDoc: "وثيقة مُنشأة تلقائياً. لا تحتاج إلى توقيع.",
+    generatedOn: "تم الإنشاء في",
+    // Email
+    emailSubject: (number: string) => `فاتورة Kambio — طلب رقم #${number}`,
+    emailGreeting: (name: string) => `مرحباً، ${name}`,
+    emailBody: "مرفق بهذا البريد فاتورتك الرسمية بتنسيق PDF. يمكنك حفظها أو طباعتها عند الحاجة.",
+    emailDetail: "التفاصيل",
+    emailValue: "القيمة",
+    emailOrderRef: "رقم الطلب",
+    emailAmountSent: "المبلغ المُرسل",
+    emailRecipient: "المستلم",
+    emailTotal: "إجمالي المستلم",
+    emailAttachNote: "📎 الفاتورة بصيغة PDF مرفقة بهذا البريد.",
+    emailFooter: "هذا بريد تلقائي من Kambio. الرجاء عدم الرد على هذا البريد.",
+  },
+};
+
+export function getInvoiceT(locale: InvoiceLocale) {
+  return invoiceTranslations[locale] ?? invoiceTranslations.es;
+}

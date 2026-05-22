@@ -1,0 +1,225 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  roleId        String?
+  phone         String?
+  accounts      Account[]
+  managedOrders Order[]    @relation("Manager")
+  orders        Order[]    @relation("Sender")
+  sessions      Session[]
+  role          Role?      @relation(fields: [roleId], references: [id])
+  exchanges     Exchange[]
+}
+
+model Role {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  permissions Permission[]
+  users       User[]
+}
+
+model Permission {
+  id     String @id @default(cuid())
+  module String
+  action String
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, module, action])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Currency {
+  id            String        @id @default(cuid())
+  code          String        @unique
+  symbol        String
+  name          String
+  isPrimary     Boolean       @default(false)
+  rateUnder500  Decimal       @default(1.0) @db.Decimal(18, 6)
+  rate500To1000 Decimal       @default(1.0) @db.Decimal(18, 6)
+  rateOver1000  Decimal       @default(1.0) @db.Decimal(18, 6)
+  buyRate       Decimal       @default(1.0) @db.Decimal(18, 6)
+  sellRate      Decimal       @default(1.0) @db.Decimal(18, 6)
+  balances      Balance[]
+  exchangesFrom Exchange[]    @relation("ExchangeFrom")
+  exchangesTo   Exchange[]    @relation("ExchangeTo")
+  ordersFrom    Order[]       @relation("CurrencyFrom")
+  ordersTo      Order[]       @relation("CurrencyTo")
+  transactions  Transaction[]
+}
+
+model Wallet {
+  id           String        @id @default(cuid())
+  name         String
+  branchId     String?
+  balances     Balance[]
+  exchanges    Exchange[]
+  transactions Transaction[]
+  orders       Order[]
+  branch       Branch?       @relation(fields: [branchId], references: [id])
+}
+
+model Balance {
+  id         String   @id @default(cuid())
+  walletId   String
+  currencyId String
+  amount     Decimal  @default(0) @db.Decimal(18, 2)
+  currency   Currency @relation(fields: [currencyId], references: [id])
+  wallet     Wallet   @relation(fields: [walletId], references: [id])
+
+  @@unique([walletId, currencyId])
+}
+
+model Order {
+  id             String        @id @default(cuid())
+  number         String        @unique
+  senderName     String
+  recipientName  String
+  amountFrom     Decimal       @db.Decimal(18, 2)
+  currencyFromId String
+  amountTo       Decimal       @db.Decimal(18, 2)
+  currencyToId   String
+  rate           Decimal       @db.Decimal(18, 6)
+  status         OrderStatus   @default(PENDING)
+  notes          String?
+  senderId       String?
+  managerId      String?
+  walletId       String?       // Caja que procesó el pago
+  paidAt         DateTime?     // Fecha/hora del pago
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  currencyFrom   Currency      @relation("CurrencyFrom", fields: [currencyFromId], references: [id])
+  currencyTo     Currency      @relation("CurrencyTo", fields: [currencyToId], references: [id])
+  manager        User?         @relation("Manager", fields: [managerId], references: [id])
+  sender         User?         @relation("Sender", fields: [senderId], references: [id])
+  wallet         Wallet?       @relation(fields: [walletId], references: [id])
+  transactions   Transaction[]
+}
+
+model Transaction {
+  id         String          @id @default(cuid())
+  amount     Decimal         @db.Decimal(18, 2)
+  currencyId String
+  type       TransactionType
+  walletId   String
+  orderId    String?
+  userId     String?
+  createdAt  DateTime        @default(now())
+  exchangeId String?
+  currency   Currency        @relation(fields: [currencyId], references: [id])
+  exchange   Exchange?       @relation(fields: [exchangeId], references: [id])
+  order      Order?          @relation(fields: [orderId], references: [id])
+  wallet     Wallet          @relation(fields: [walletId], references: [id])
+}
+
+model Client {
+  id         String   @id @default(cuid())
+  firstName  String
+  lastName   String
+  documentId String?
+  phone      String?
+  email      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Company {
+  id        String   @id @default("1")
+  name      String
+  address   String?
+  phone     String?
+  email     String?
+  logo      String?
+  website   String?
+  updatedAt DateTime @updatedAt
+}
+
+model Branch {
+  id        String   @id @default(cuid())
+  name      String
+  address   String?
+  phone     String?
+  manager   String?
+  createdAt DateTime @default(now())
+  wallets   Wallet[]
+}
+
+enum OrderStatus {
+  PENDING
+  VERIFIED
+  PAID
+  CANCELLED
+}
+
+enum TransactionType {
+  INCOME
+  OUTCOME
+  TRANSFER
+  EXCHANGE
+}
+
+model Exchange {
+  id             String        @id @default(cuid())
+  walletId       String
+  wallet         Wallet        @relation(fields: [walletId], references: [id])
+  currencyFromId String
+  currencyFrom   Currency      @relation("ExchangeFrom", fields: [currencyFromId], references: [id])
+  amountFrom     Decimal       @db.Decimal(18, 6)
+  currencyToId   String
+  currencyTo     Currency      @relation("ExchangeTo", fields: [currencyToId], references: [id])
+  amountTo       Decimal       @db.Decimal(18, 6)
+  rate           Decimal       @db.Decimal(18, 6)
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id])
+  date           DateTime      @default(now())
+  createdAt      DateTime      @default(now())
+  transactions   Transaction[]
+}
